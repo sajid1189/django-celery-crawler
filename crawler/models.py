@@ -49,11 +49,17 @@ class OutLink(models.Model):
         self.last_attempt = timezone.now()
         self.save()
 
+    def __str__(self):
+        return self.url
+
 
 class Domain(models.Model):
     domain = models.CharField(max_length=255)
     timeout = models.BooleanField(default=False)
     last_attempt = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return self.domain
 
     def set_timeout(self):
         self.timeout = True
