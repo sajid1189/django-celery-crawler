@@ -6,16 +6,27 @@ from crawler.models import OutLink
 
 
 class CrawlerManager:
-    def __init__(self, seeds, qs=100):
+    def __init__(self, seeds=None, qs=100):
 
+        if not seeds:
+            try:
+                seeds = list(OutLink.objects.filter(download_status=False).order_by('created_at').values_list('url', flat=True)[0:100])
+            except:
+                try:
+                    seeds = list(OutLink.objects.filter(download_status=False).order_by('created_at').values_list('url', flat=True)[0:10])
+                except:
+                    return
         self.seeds = seeds
         self.workers_queue = []
         self.queue_size = qs
-        for seed in self.seeds:
+        for seed in seeds:
             task = worker.delay(seed)
             self.workers_queue.append((task, seed))
 
     def crawl(self):
+        if not self.seeds:
+            print 'Sorry. There were no seeds.'
+            return
         thread = Scheduler(self.workers_queue)
         thread.start()
         while True:

@@ -2,6 +2,9 @@ import os
 from urlparse import urlparse
 from celery import Celery
 
+from django.utils import timezone
+from django.conf import settings
+
 import requests
 
 from scrapper import Soup
@@ -23,22 +26,37 @@ app = Celery('crawler', broker="amqp://localhost", backend='rpc://localhost')
 def worker(url):
     from crawler.models import OutLink, Page, Domain
     outlink_obj, created = OutLink.objects.get_or_create(url=url)
-    domain = urlparse(url).netloc
+
+    # ################### CHECK DOMAIN TIMEOUT  ########################
+    domain_string = urlparse(url).netloc
+    try:
+        domain, created = Domain.objects.get_or_create(domain=domain_string)
+        if not created and domain.timeout:
+            if domain.last_timeout:
+                if domain.last_attempt + timezone.timedelta(seconds=settings.REQUEST_DOMAIN_FALLBACK_TIME) < timezone.now():
+                    return
+    except Exception as e:
+        print e
+        print "something went wrong at: {}".format(url)
+        return
+
     if not outlink_obj.download_status:
         try:
             Page.objects.get(url=url)
         except Page.DoesNotExist:
-            soup = Soup(url)
 
             try:
                 response = requests.get(url)
                 if response.status_code == 200:
-                    soup = Soup(response)
+                    soup = Soup(url, response)
             except requests.exceptions.Timeout:
-                domain, created = Domain.objects.get_or_create(domain=domain)
+
                 domain.set_timeout()
                 outlink, created = OutLink.objects.get_or_create(url=url)
                 outlink.set_timeout()
+                if not created:
+                    outlink.download_status = False
+                    outlink.save()
             except:
                 pass
             if soup.soup:
@@ -50,4 +68,3 @@ def worker(url):
                     outlink = OutLink.objects.create(url=link)
                 except:
                     pass
-

@@ -32,7 +32,7 @@ class OutLink(models.Model):
     download_status = models.BooleanField(default=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     timeout = models.BooleanField(default=False)
-    last_attempt = models.DateTimeField()
+    last_attempt = models.DateTimeField(null=True)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -52,11 +52,11 @@ class OutLink(models.Model):
 
 class Domain(models.Model):
     domain = models.CharField(max_length=255)
-    timeout = models.DateTimeField(default=False)
-    last_timeout = models.DateTimeField(null=True)
+    timeout = models.BooleanField(default=False)
+    last_attempt = models.DateTimeField(null=True)
 
     def set_timeout(self):
         self.timeout = True
-        self.last_timeout = timezone.now()
+        self.last_attempt = timezone.now()
         self.save()
 

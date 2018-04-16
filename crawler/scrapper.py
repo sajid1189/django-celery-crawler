@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 
 class Soup:
-    def __init__(self, response):
+    def __init__(self, url, response):
         """
         A wrapper over BeautifulSoup class.
         :param content: is  response.content from a http request.
@@ -18,12 +18,12 @@ class Soup:
         try:
             self.soup = BeautifulSoup(response.content, 'html.parser')
             self.html = response.text
+            self.external_links = set()
+            self.internal_links = set()
+            self.absolute_internal_links = set()
+            self.links = set()
         except:
             self.soup = None
-        self.external_links = set()
-        self.internal_links = set()
-        self.absolute_internal_links = set()
-        self.links = set()
 
     def get_pretty_soup(self):
         if self.soup:
