@@ -31,7 +31,7 @@ class CrawlerManager:
         thread.start()
         while True:
             print 'len of queue ', len(self.workers_queue)
-            if len(self.workers_queue) < 100:
+            if len(self.workers_queue) < self.queue_size:
                 outlinks = OutLink.objects.filter(download_status=False).order_by('created_at')
                 print 'outl-inks found ', outlinks.count()
                 if outlinks.count() == 0:
