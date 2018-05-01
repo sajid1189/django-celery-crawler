@@ -73,6 +73,5 @@ class Soup:
         if not self.absolute_internal_links:
             for link in self.get_internal_links():
                 self.absolute_internal_links.add(urljoin(self.url, link))
-        print self.absolute_internal_links
         return self.absolute_internal_links
 
