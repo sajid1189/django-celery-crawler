@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'django_crawler.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'crawler',
+        'NAME': 'crawler2',
         'USER': 'postgres',
         'PASSWORD': '',
         'HOST': 'localhost',
