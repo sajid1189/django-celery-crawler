@@ -41,10 +41,12 @@ class CrawlerManager:
                 else:
                     free_workers_count = min(outlinks.count(), self.queue_size - len(self.workers_queue))
                     print 'min value was ', free_workers_count
-                    for outlink in outlinks[0:free_workers_count-1]:
-                        print 'adding ', outlink.url
-                        task = worker.delay(outlink.url)
-                        self.workers_queue.append((task, outlink.url))
+                    if free_workers_count < 0:
+                        time.sleep(2)
+                        for outlink in outlinks[0:free_workers_count]:
+                            print 'adding ', outlink.url
+                            task = worker.delay(outlink.url)
+                            self.workers_queue.append((task, outlink.url))
             else:
                 time.sleep(1)
                 continue

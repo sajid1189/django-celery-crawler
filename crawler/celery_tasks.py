@@ -63,25 +63,28 @@ def worker(url):
                     if soup.soup:
                         outlink_obj.download_status = True
                         outlink_obj.save()
-                        Page.objects.create(url=url, content=soup.html)
-                        outlinks = soup.get_absolute_internal_links()
-                        print outlinks
-                    for outlink in outlinks:
-                        if outlink.startswith("mailto") or outlink.startswith("tel:") or outlink.startswith("javascript:"):
-                            continue
-                        elif '#' in outlink:
-                            outlink = outlink.split('#')[0]
                         try:
-                            url_hash = get_url_hash(outlink)
-                            OutLink.objects.get(url_hash=url_hash)
-
-                        except OutLink.DoesNotExist:
-                            outlink = OutLink.objects.create(url=outlink)
-                            print 'created {}'.format(outlink)
-
+                            Page.objects.create(url=url, content=soup.html)
                         except Exception as e:
-                            print e
-                            print 'outlink was not created'
+                            print "page object could not be created: {}".format(url)
+
+                        outlinks = soup.get_absolute_internal_links()
+                        for outlink in outlinks:
+                            if outlink.startswith("mailto") or outlink.startswith("tel:") or outlink.startswith("javascript:"):
+                                continue
+                            elif '#' in outlink:
+                                outlink = outlink.split('#')[0]
+                            try:
+                                url_hash = get_url_hash(outlink)
+                                OutLink.objects.get(url_hash=url_hash)
+
+                            except OutLink.DoesNotExist:
+                                outlink = OutLink.objects.create(url=outlink)
+                                print 'created {}'.format(outlink)
+
+                            except Exception as e:
+                                print e
+                                print 'outlink was not created'
 
                 elif 300 <= response.status_code < 400:
                     outlink_obj.download_status = True
