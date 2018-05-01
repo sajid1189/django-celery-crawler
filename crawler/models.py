@@ -50,7 +50,6 @@ class OutLink(models.Model):
     def set_timeout(self):
         self.timeout = True
         self.last_attempt = timezone.now()
-        self.save()
 
     def __str__(self):
         return self.url
@@ -72,3 +71,4 @@ class Domain(models.Model):
 
 def get_url_hash(url):
     return hashlib.md5(url.encode('utf-8')).hexdigest()
+

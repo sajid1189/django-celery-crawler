@@ -14,7 +14,7 @@ class StaticSoup:
             self.soup = BeautifulSoup(content, 'html.parser')
             self.html = self.soup.text
         except Exception as e:
-            print 'exception thrown at :{}'.format(url)
+            print 'exception thrown at .. '
             self.soup = None
         self.external_links = set()
         self.internal_links = set()
