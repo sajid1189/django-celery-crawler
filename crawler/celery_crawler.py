@@ -43,6 +43,7 @@ class CrawlerManager:
                     print 'min value was ', free_workers_count
                     if free_workers_count < 0:
                         time.sleep(2)
+                    else:
                         for outlink in outlinks[0:free_workers_count]:
                             print 'adding ', outlink.url
                             task = worker.delay(outlink.url)
