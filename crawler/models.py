@@ -56,7 +56,7 @@ class OutLink(models.Model):
 
 
 class Domain(models.Model):
-    domain = models.CharField(max_length=255)
+    domain = models.CharField(max_length=255, unique=True)
     timeout = models.BooleanField(default=False)
     last_attempt = models.DateTimeField(null=True)
 

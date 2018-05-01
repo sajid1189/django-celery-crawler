@@ -72,6 +72,14 @@ class Soup:
     def get_absolute_internal_links(self):
         if not self.absolute_internal_links:
             for link in self.get_internal_links():
-                self.absolute_internal_links.add(urljoin(self.url, link))
+                if not self.is_media_resource(link):
+                    self.absolute_internal_links.add(urljoin(self.url, link))
         return self.absolute_internal_links
 
+    def is_media_resource(self, url):
+        media_identifier_tokens = ['.jpg', '.png', 'jpeg', '.js', '.css', '.gif', '.pdf', '.doc', '.docx', '.svg']
+        for token in media_identifier_tokens:
+            if url.lower().endswith(token):
+                return True
+
+        return False

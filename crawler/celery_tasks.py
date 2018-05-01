@@ -64,8 +64,10 @@ def worker(url):
                         outlink_obj.download_status = True
                         outlink_obj.save()
                         Page.objects.create(url=url, content=soup.html)
-                    for outlink in soup.get_absolute_internal_links():
-                        if outlink.startswith("mailto") or outlink.startswith("tel:") or outlink.startswith("javascript:") or "#" in outlink:
+                        outlinks = soup.get_absolute_internal_links()
+                        print outlinks
+                    for outlink in outlinks:
+                        if outlink.startswith("mailto") or outlink.startswith("tel:") or outlink.startswith("javascript:"):
                             continue
                         elif '#' in outlink:
                             outlink = outlink.split('#')[0]
