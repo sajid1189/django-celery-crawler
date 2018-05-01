@@ -80,7 +80,6 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'crawler2',
         'USER': 'postgres',
-        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '',
     }
