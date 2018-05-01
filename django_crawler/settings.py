@@ -79,7 +79,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'crawler2',
-        'USER': 'postgres',
+        'USER': 'sajid',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '',
     }
