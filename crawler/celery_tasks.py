@@ -24,7 +24,7 @@ app = Celery('crawler', broker="amqp://localhost", backend='rpc://localhost')
 
 
 @app.task
-def worker(url):
+def worker(url, tor=False):
     from crawler.models import OutLink, Page, Domain, get_url_hash
     outlink_obj, created = OutLink.objects.get_or_create(url=url)
     if url.startswith("mailto"):
@@ -52,12 +52,14 @@ def worker(url):
         except Page.DoesNotExist:
 
             try:
-                session = requests.session()
-                session.proxies = {}
-                session.proxies['http'] = 'socks5h://localhost:9050'
-                session.proxies['https'] = 'socks5h://localhost:9050'
-
-                response = session.get(url)
+                if tor:
+                    session = requests.session()
+                    session.proxies = {}
+                    session.proxies['http'] = 'socks5h://localhost:9050'
+                    session.proxies['https'] = 'socks5h://localhost:9050'
+                    response = session.get(url)
+                else:
+                    response = requests.get(url)
                 if response.status_code == 200:
                     soup = Soup(url, response)
                     if soup.soup:
