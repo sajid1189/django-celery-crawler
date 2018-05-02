@@ -81,8 +81,8 @@ DATABASES = {
         'NAME': 'crawler2',
         'USER': 'sajid',
         'PASSWORD': '12345',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': '188.166.108.152',
+        'PORT': '5432',
     }
 }
 
