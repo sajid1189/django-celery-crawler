@@ -1,8 +1,17 @@
-Django==1.11.12
+amqp==2.2.2
 beautifulsoup4==4.6.0
+billiard==3.5.0.3
+celery==4.1.0
 certifi==2018.1.18
 chardet==3.0.4
+Django==1.11.12
 idna==2.6
+kombu==4.1.0
+psycopg2==2.7.4
+PySocks==1.6.8
+pytz==2018.3
 requests==2.18.4
 urllib3==1.22
-psycopg2
+vine==1.1.4
+
+# also need to install rabbit-mq server in the host machine.
