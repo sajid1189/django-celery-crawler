@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.conf import settings
 
 import requests
-
+import validators
 from scrapper import Soup
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_crawler.settings')
@@ -24,7 +24,7 @@ app = Celery('crawler', broker="amqp://localhost", backend='rpc://localhost')
 
 
 @app.task
-def worker(url, tor=False):
+def worker(url, tor=True):
     from crawler.models import OutLink, Page, Domain, get_url_hash
     outlink_obj, created = OutLink.objects.get_or_create(url=url)
     if url.startswith("mailto"):
@@ -109,3 +109,67 @@ def worker(url, tor=False):
         except:
             print "something went wrong in Page lookup or creation."
 
+
+@app.task
+def downloader_flat(url, tor=True):
+    # TODO check if the url is available for download.
+    if not validators.url(url):
+        return
+    response = None
+
+    if tor:
+        session = requests.session()
+        session.proxies = {}
+        session.proxies['http'] = "socks5h://localhost:9050"
+        session.proxies['https'] = "'socks5h://localhost:9050'"
+        try:
+            response = session.get(url)
+        except:
+            print("error while requesting page with tor.")
+    else:
+        try:
+            response = requests.get(url)
+        except:
+            print("error while requesting without tor")
+
+    if response is None:
+        return
+
+    # TODO write the page object in the local database.
+    return
+
+
+@app.task
+def yelp_crawler(url, tor=True):
+
+    if not validators.url(url):
+        return
+
+    # TODO check if the url is available for download.
+
+    parsed_url = urlparse(url)
+    if parsed_url.netloc != "www.yelp.de":
+        print("yelp worker got non yelp url")
+
+    response = None
+
+    if tor:
+        session = requests.session()
+        session.proxies = {}
+        session.proxies['http'] = "socks5h://localhost:9050"
+        session.proxies['https'] = "'socks5h://localhost:9050'"
+        try:
+            response = session.get(url)
+        except:
+            print("error while requesting page with tor.")
+    else:
+        try:
+            response = requests.get(url)
+        except:
+            print("error while requesting without tor")
+
+    if response is None:
+        return
+
+    # TODO write the page object in the local database.
+    return
