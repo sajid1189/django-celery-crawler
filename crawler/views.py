@@ -13,7 +13,9 @@ def get_outlinks(request):
     links = []
     try:
         with transaction.atomic():
-            outlinks = OutLink.objects.filter(download_status=OutLink.DownloadStatus.Available)[:100]
+            outlinks = OutLink.objects.filter(download_status=OutLink.DownloadStatus.Available)
+            if outlinks.count() > 100:
+                outlinks = outlinks[:100]
             for link in outlinks:
                 links.append(link.url)
                 link.download_status = OutLink.DownloadStatus.Pending
