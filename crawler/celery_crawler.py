@@ -1,7 +1,7 @@
 from threading import Thread
 import time
 import json
-from crawler.celery_tasks import worker
+from crawler.celery_tasks import downloader, yelp_downloader
 from crawler.models import OutLink
 
 
@@ -20,7 +20,7 @@ class CrawlerManager:
         self.workers_queue = []
         self.queue_size = qs
         for seed in seeds:
-            task = worker.delay(seed)
+            task = downloader.delay(seed)
             self.workers_queue.append((task, seed))
 
     def crawl(self):
@@ -46,7 +46,7 @@ class CrawlerManager:
                     else:
                         for outlink in outlinks[0:free_workers_count]:
                             print 'adding ', outlink.url
-                            task = worker.delay(outlink.url)
+                            task = downloader.delay(outlink.url)
                             self.workers_queue.append((task, outlink.url))
             else:
                 time.sleep(1)
@@ -92,7 +92,7 @@ class YelpCrawlerManager:
         self.workers_queue = []
         self.queue_size = qs
         for seed in seeds:
-            task = worker.delay(seed)
+            task = yelp_downloader.delay(seed)
             self.workers_queue.append((task, seed))
 
     def crawl(self):
@@ -118,7 +118,7 @@ class YelpCrawlerManager:
                     else:
                         for outlink in outlinks[0:free_workers_count]:
                             print 'adding ', outlink.url
-                            task = worker.delay(outlink.url)
+                            task = yelp_downloader.delay(outlink.url)
                             self.workers_queue.append((task, outlink.url))
             else:
                 time.sleep(1)

@@ -15,9 +15,10 @@ def get_outlinks(request):
         with transaction.atomic():
             outlinks = OutLink.objects.filter(download_status=OutLink.DownloadStatus.Available)[:100]
             for link in outlinks:
-                links.append(link)
+                links.append(link.url)
                 link.download_status = OutLink.DownloadStatus.Pending
                 link.save()
-            return JsonResponse(json.dumps({'links': links}))
-    except:
-        return JsonResponse(json.dumps({'links': []}))
+            return JsonResponse({'links': links})
+    except Exception as e:
+        print e
+        return JsonResponse({'links': []})

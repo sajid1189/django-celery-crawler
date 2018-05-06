@@ -24,7 +24,7 @@ app = Celery('crawler', broker="amqp://localhost", backend='rpc://localhost')
 
 
 @app.task
-def worker(url, tor=True):
+def downloader(url, tor=True):
     from crawler.models import OutLink, Page, Domain, get_url_hash
     outlink_obj, created = OutLink.objects.get_or_create(url=url)
     if url.startswith("mailto"):
@@ -111,7 +111,7 @@ def worker(url, tor=True):
 
 
 @app.task
-def downloader_flat(url, tor=True):
+def flat_downloader(url, tor=True):
     # TODO check if the url is available for download.
     if not validators.url(url):
         return
@@ -140,7 +140,7 @@ def downloader_flat(url, tor=True):
 
 
 @app.task
-def yelp_crawler(url, tor=True):
+def yelp_downloader(url, tor=True):
 
     if not validators.url(url):
         return
