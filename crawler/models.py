@@ -3,6 +3,9 @@ from __future__ import unicode_literals
 import hashlib
 from django.db import models
 from django.utils import timezone
+
+from djchoices import DjangoChoices, ChoiceItem
+
 # Create your models here.
 
 
@@ -27,9 +30,15 @@ class Page(models.Model):
 
 
 class OutLink(models.Model):
+
+    class DownloadStatus(DjangoChoices):
+        No = ChoiceItem(0, "open for download")
+        Pending = ChoiceItem(1, "some worker is downloading")
+        Completed = ChoiceItem(2, "downloaded and saved")
+
     url = models.TextField()
     url_hash = models.CharField(max_length=34, unique=True, db_index=True)
-    download_status = models.BooleanField(default=False, db_index=True)
+    download_status = models.IntegerField(default=DownloadStatus.No, choices=DownloadStatus.choices)
     created_at = models.DateTimeField(auto_now_add=True)
     timeout = models.BooleanField(default=False)
     last_attempt = models.DateTimeField(null=True)

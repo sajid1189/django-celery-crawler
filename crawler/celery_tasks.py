@@ -44,7 +44,7 @@ def worker(url, tor=True):
         return
     if not outlink_obj.download_status:
         try:
-            Page.objects.get(url_hash=get_url_hash(url))
+            Page.objects.using('pages').get(url_hash=get_url_hash(url))
             outlink_obj.download_status = True
             outlink_obj.save()
             print 'outlink download status changed'
@@ -66,7 +66,7 @@ def worker(url, tor=True):
                         outlink_obj.download_status = True
                         outlink_obj.save()
                         try:
-                            Page.objects.create(url=url, content=soup.html)
+                            Page.objects.using('pages').create(url=url, content=soup.html)
                         except Exception as e:
                             print "page object could not be created: {}".format(url)
 

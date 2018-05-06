@@ -25,15 +25,15 @@ class CrawlerManager:
 
     def crawl(self):
         if not self.seeds:
-            print 'Sorry. There were no seeds.'
+            print 'Sorry. There were no seeds. Crawler is exiting....'
             return
         thread = Scheduler(self.workers_queue)
         thread.start()
         while True:
             print 'len of queue ', len(self.workers_queue)
             if len(self.workers_queue) < self.queue_size:
-                outlinks = OutLink.objects.filter(download_status=False)
-                print 'outl-inks found ', outlinks.count()
+                outlinks = OutLink.objects.filter(download_status=OutLink.DownloadStatus.No)
+                print 'out-links found ', outlinks.count()
                 if outlinks.count() == 0:
                     print 'no out-links, i am sleeping'
                     time.sleep(1)
