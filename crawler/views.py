@@ -1,6 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import json
 
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.db import transaction
 
-# Create your views here.
+from .models import OutLink
+
+
+def get_outlinks(request):
+    links = []
+    try:
+        with transaction.atomic():
+            outlinks = OutLink.objects.filter(download_status=OutLink.DownloadStatus.Available)[:100]
+            for link in outlinks:
+                links.append(link)
+                link.download_status = OutLink.DownloadStatus.Pending
+                link.save()
+            return JsonResponse(json.dumps({'links': links}))
+    except:
+        return JsonResponse(json.dumps({'links': []}))

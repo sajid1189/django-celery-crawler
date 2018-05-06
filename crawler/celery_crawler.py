@@ -32,7 +32,7 @@ class CrawlerManager:
         while True:
             print 'len of queue ', len(self.workers_queue)
             if len(self.workers_queue) < self.queue_size:
-                outlinks = OutLink.objects.filter(download_status=OutLink.DownloadStatus.No)
+                outlinks = OutLink.objects.filter(download_status=OutLink.DownloadStatus.Available)
                 print 'out-links found ', outlinks.count()
                 if outlinks.count() == 0:
                     print 'no out-links, i am sleeping'

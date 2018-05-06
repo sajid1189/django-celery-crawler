@@ -16,6 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from crawler.views import get_outlinks
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^get-outlinks/', get_outlinks, name='get_outlinks')
 ]
