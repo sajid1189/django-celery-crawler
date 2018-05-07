@@ -54,9 +54,10 @@ def downloader(url, tor=True):
             try:
                 if tor:
                     session = requests.session()
-                    session.proxies = {}
-                    session.proxies['http'] = 'socks5h://localhost:9050'
-                    session.proxies['https'] = 'socks5h://localhost:9050'
+                    session.proxies = {
+                        'http': 'socks5h://localhost:9050',
+                        'https': 'socks5h://localhost:9050'
+                    }
                     response = session.get(url)
                 else:
                     response = requests.get(url)
