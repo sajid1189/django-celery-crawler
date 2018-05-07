@@ -36,7 +36,7 @@ class CrawlerManager:
             urls = self.get_outlinks_from_remote(qs=self.queue_size)
         if urls:
             for url in urls:
-                task = yelp_downloader.delay(url)
+                task = downloader.delay(url)
                 self.workers_queue.append((task, url))
         thread = Scheduler(self.workers_queue)
         thread.start()
