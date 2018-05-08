@@ -130,9 +130,6 @@ def downloader(url, tor=True):
             except Exception as e:
                 print unicode(e)
 
-        except:
-            print "something went wrong in Page lookup or creation."
-
 
 @app.task
 def flat_downloader(url, tor=True):
