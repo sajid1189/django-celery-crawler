@@ -53,16 +53,14 @@ def downloader(url, tor=True):
     domain_string = urlparse(url).netloc
     try:
         domain, created = Domain.objects.get_or_create(domain=domain_string)
-        if not created and domain.timeout:
-            if domain.last_attempt:
-                if domain.last_attempt + timezone.timedelta(seconds=settings.REQUEST_DOMAIN_FALLBACK_TIME) < timezone.now():
-                    print('still in timeout')
-                    return
+        if not created and domain.timeout and domain.last_attemp:
+            if domain.last_attempt + timezone.timedelta(seconds=settings.REQUEST_DOMAIN_FALLBACK_TIME) < timezone.now():
+                print('still in timeout')
+                return
     except Exception as e:
-        print "something went wrong at: {}".format(url)
-        print unicode(e)
+        print "something went wrong at while checking if domain in timeout: {}".format(url)
         return
-    if not outlink_obj.download_status:
+    if outlink_obj.download_status != OutLink.DownloadStatus.Completed:
         try:
             Page.objects.using('pages').get(url_hash=get_url_hash(url))
             outlink_obj.download_status = True
@@ -73,7 +71,7 @@ def downloader(url, tor=True):
 
             try:
                 session = requests.session()
-                session.headers = {'User-Agent': random.random*len(user_agents)}
+                session.headers = {'User-Agent': user_agents[random.randint(0, len(user_agents))]}
                 if tor:
                     session.proxies = {
                         'http': 'socks5h://localhost:9050',
@@ -85,7 +83,7 @@ def downloader(url, tor=True):
                 if response.status_code == 200:
                     soup = Soup(url, response)
                     if soup.soup:
-                        outlink_obj.download_status = True
+                        outlink_obj.download_status = OutLink.DownloadStatus.Completed
                         outlink_obj.save()
                         try:
                             Page.objects.using('pages').create(url=url, content=soup.html)
