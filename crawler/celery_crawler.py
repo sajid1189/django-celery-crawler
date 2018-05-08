@@ -49,7 +49,10 @@ class CrawlerManager:
                     time.sleep(5)
                     continue
                 for url in urls:
-                    print('adding {}'.format(url))
+                    try:
+                        print('adding {}'.format(url))
+                    except:
+                        pass
                     task = downloader.delay(url)
                     self.workers_queue.append((task, url))
             else:

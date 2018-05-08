@@ -50,7 +50,8 @@ def downloader(url, tor=True):
     if url.startswith("mailto"):
         return
     # ################### CHECK DOMAIN TIMEOUT  ########################
-    domain_string = urlparse(url).netloc
+    url_parse_object = urlparse(url)
+    domain_string = url_parse_object.netloc
     try:
         domain, created = Domain.objects.get_or_create(domain=domain_string)
         if not created and domain.timeout and domain.last_attemp:
@@ -96,6 +97,8 @@ def downloader(url, tor=True):
                             if outlink.startswith("mailto") or outlink.startswith("tel:") or outlink.startswith("javascript:"):
                                 continue
                             elif '#' in outlink:
+                                if urlparse(outlink).path == url_parse_object.path:
+                                    continue
                                 outlink = outlink.split('#')[0]
                             try:
                                 url_hash = get_url_hash(outlink)
@@ -103,7 +106,7 @@ def downloader(url, tor=True):
 
                             except OutLink.DoesNotExist:
                                 outlink = OutLink.objects.create(url=outlink)
-                                print 'outlink created {}'.format(outlink)
+                                # print 'outlink created {}'.format(outlink)
 
                             except Exception as e:
                                 print e

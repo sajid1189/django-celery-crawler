@@ -77,7 +77,7 @@ class Soup:
         return self.absolute_internal_links
 
     def is_media_resource(self, url):
-        media_identifier_tokens = ['.jpg', '.png', 'jpeg', '.js', '.css', '.gif', '.pdf', '.doc', '.docx', '.svg']
+        media_identifier_tokens = ['.jpg', '.png', 'jpeg', '.js', '.css', '.gif', '.pdf', '.doc', '.docx', '.svg', '.zip']
         for token in media_identifier_tokens:
             if url.lower().endswith(token):
                 return True
