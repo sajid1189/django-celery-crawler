@@ -1,0 +1,55 @@
+############## database configs #############
+# install postgres
+sudo apt-get install postgresql postgresql-contrib
+
+# switch to psql
+sudo su postgres
+psql
+
+# create database and role
+CREATE DATABASE links;
+CREATE ROLE sajid WITH LOGIN PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE links TO username;
+-----------------------------------------------------------------------------------
+
+# On the database server do the steps below:
+open add following line at the end of /etc/postgresql/9.5/main/postgresql.conf
+
+listen_addresses = '*'
+
+
+#open add following line at the end of /etc/postgresql/9.5/main/pg_hba.conf
+host all all 0.0.0.0/0 trust
+
+ -----------------------------------------------------------------
+# If using the celery crawler then do the following
+
+# Install rabbitmq server
+sudo apt-get install rabbitmq-server
+
+# install celery
+apt install python-celery-common
+
+# start a celery-worker
+celery -A crawler.celery_tasks worker --loglevel=info
+--------------------------------------------------------------------------
+
+# To use tor IP addresses do the following
+# install tor
+sudo apt-get install tor
+
+-------------------------------------------------------------------------
+
+# Python related stuffs
+
+# install pip
+sudo apt-get install python-pip
+
+# install virtual environment
+sudo pip install virtualenv
+
+# run the following tow lines in the terminal.
+export LC_ALL="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+
+--------------------------------------------------------------------------
