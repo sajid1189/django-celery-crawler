@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from urlparse import urljoin, urlparse
 
-import requests
 from bs4 import BeautifulSoup
 
 
@@ -13,7 +12,6 @@ class Soup:
         A wrapper over BeautifulSoup class.
         :param content: is  response.content from a http request.
         """
-        # print 'scrapping: ', url
         self.html = ""
         try:
             self.soup = BeautifulSoup(response.content, 'html.parser')

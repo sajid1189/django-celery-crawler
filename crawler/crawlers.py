@@ -1,25 +1,10 @@
 import thread
 import time
 
-from crawler.arrays import Queue, ThreadSafeQueue
+from crawler.arrays import Queue
 from crawler.models import Page
 from crawler.scrapper import Soup
 from Queue import Queue as SysQueue
-
-
-seeds = ["https://www.dastelefonbuch.de/Branchen",
-         "https://www.golocal.de/deutschland/locations/",
-         "https://web2.cylex.de/s?q=&c=&z=&p=1&dst=&sUrl=&cUrl=&hw=1",
-         "https://www.oeffnungszeitenbuch.de/suche/filiale-Wo-50+km-x-1.html",
-         "https://www.stadtbranchenbuch.com/",
-         "https://www.branchenverzeichnis.org/",
-         "http://branchenbuch.meinestadt.de/",
-         "https://www.goyellow.de/",
-         "https://www.listit.de/",
-         "https://www.gelbeseiten.de/",
-         "https://www.branchenverzeichnis.info/verzeichnis.html",
-         "https://www.11880.com/branchen",
-         "https://www.misterwhat.de/"]
 
 
 class Crawler:
@@ -138,22 +123,3 @@ def push_to_db(url, html):
         page.save()
     except Exception as e:
         pass
-        # print url
-
-
-# def dumper(visited_links):
-#     import json
-#     while True:
-#
-#         with open('visited_links.txt', 'w') as f:
-#             json.dump(list(visited_links), f, indent=2)
-#         time.sleep(20)
-#
-#
-# def queue_dumper(queue):
-#     import json
-#
-#     while True:
-#         with open('queue.txt', 'w') as f:
-#             json.dump(queue, f, indent=2)
-#         time.sleep(30)

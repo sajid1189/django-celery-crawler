@@ -6,8 +6,6 @@ from django.utils import timezone
 
 from djchoices import DjangoChoices, ChoiceItem
 
-# Create your models here.
-
 
 class Page(models.Model):
     url = models.TextField()

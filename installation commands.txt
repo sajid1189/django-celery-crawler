@@ -45,11 +45,11 @@ sudo apt-get install tor
 # install pip
 sudo apt-get install python-pip
 
-# install virtual environment
-sudo pip install virtualenv
-
-# run the following tow lines in the terminal.
+# run the following tow lines to set locale.
 export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
+
+# install virtual environment
+sudo pip install virtualenv
 
 --------------------------------------------------------------------------

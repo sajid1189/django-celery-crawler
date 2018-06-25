@@ -1,9 +1,6 @@
 from urlparse import urlparse, urljoin
 
-from crawler.models import Page
-
 from bs4 import BeautifulSoup
-import requests
 
 
 class StaticSoup:
