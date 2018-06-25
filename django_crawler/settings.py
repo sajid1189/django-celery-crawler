@@ -77,8 +77,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'links',
         'USER': 'sajid',
-        'PASSWORD': '12345',
-        'HOST': '139.59.30.42',
+        'PASSWORD': 'password',
+        'HOST': '206.189.133.176',
         'PORT': '5432',
     },
     'pages': {
