@@ -7,9 +7,9 @@ sudo su postgres
 psql
 
 # create database and role
-CREATE DATABASE links;
+CREATE DATABASE pages;
 CREATE ROLE sajid WITH LOGIN PASSWORD 'password';
-GRANT ALL PRIVILEGES ON DATABASE links TO username;
+GRANT ALL PRIVILEGES ON DATABASE links TO sajid;
 -----------------------------------------------------------------------------------
 
 # On the database server do the steps below:
