@@ -9,7 +9,7 @@ psql
 # create database and role
 CREATE DATABASE pages;
 CREATE ROLE sajid WITH LOGIN PASSWORD 'password';
-GRANT ALL PRIVILEGES ON DATABASE links TO sajid;
+GRANT ALL PRIVILEGES ON DATABASE pages TO sajid;
 -----------------------------------------------------------------------------------
 
 # On the database server do the steps below:
