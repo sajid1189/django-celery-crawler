@@ -55,3 +55,14 @@ sudo pip install virtualenv
 --------------------------------------------------------------------------
 # clone repo
 git clone https://github.com/sajid1189/django-celery-crawler.git
+
+---------------------------------------------------
+source venv/bin/activate
+pip install -r requirements.txt
+python manage.py migrate --database=pages
+python manage.py shell 
+
+from crawler.threaded_crawler import TCrawlerManager
+c = TCrawlerManager()
+c.crawl()
+
