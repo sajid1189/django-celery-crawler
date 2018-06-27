@@ -53,3 +53,5 @@ export LC_CTYPE="en_US.UTF-8"
 sudo pip install virtualenv
 
 --------------------------------------------------------------------------
+# clone repo
+git clone https://github.com/sajid1189/django-celery-crawler.git
