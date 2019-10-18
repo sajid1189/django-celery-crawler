@@ -11,7 +11,7 @@ psycopg2==2.7.4
 PySocks==1.6.8
 pytz==2018.3
 requests==2.18.4
-urllib3==1.22
+urllib3==1.24.2
 vine==1.1.4
 django-choices==1.6.0
 validators==0.12.1
